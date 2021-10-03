@@ -1,10 +1,9 @@
-using System;
-
 namespace web
 {
-  public record Comment
+  public class Comment
   {
-    public Guid Id { get; init; }
-    public string Text { get; init; }
+    public int Id { get; set; }
+    public string Text { get; set; }
+    public Todo Todo { get; set; }
   }
 }

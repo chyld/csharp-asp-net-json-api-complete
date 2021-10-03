@@ -18,8 +18,6 @@ dotnet sln add web/web.csproj
 
 cd web
 dotnet add reference ../lib/lib.csproj
-
-cd lib
 dotnet add package Microsoft.Extensions.Logging.Console
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Design
@@ -27,5 +25,6 @@ dotnet add package Microsoft.EntityFrameworkCore
 
 cd test
 dotnet add reference ../lib/lib.csproj
+dotnet add reference ../web/web.csproj
 dotnet add package FluentAssertions
 ```
