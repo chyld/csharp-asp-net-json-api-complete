@@ -7,7 +7,6 @@ using System.Text.Json;
 
 namespace web
 {
-  public class Dog { public string Name; }
   [ApiController]
   [Route("todos")]
   public class TodoController : ControllerBase
@@ -74,6 +73,18 @@ namespace web
       todo = await _repository.AddTagAsync(todo, new Tag() { Name = tagDto.Name, Color = tagDto.Color });
       await _repository.SaveAsync();
       return CreatedAtAction("GetOne", new { todo.Id }, todo);
+    }
+
+    [HttpPost("{id}/close")]
+    public async Task<IActionResult> Close(Guid id)
+    {
+      var todo = await _repository.GetByIdAsync(id);
+      if (todo is null) return BadRequest();
+
+      todo.Status = StatusEnum.Closed;
+
+      await _repository.SaveAsync();
+      return RedirectToAction("GetOne", new { todo.Id });
     }
   }
 }
