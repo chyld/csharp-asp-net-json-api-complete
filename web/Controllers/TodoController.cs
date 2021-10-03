@@ -46,5 +46,34 @@ namespace web
       var todo = await _repository.GetByIdAsync(id);
       return Ok(todo);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+      var todos = await _repository.GetAllAsync();
+      return Ok(todos);
+    }
+
+    [HttpPost("{id}/comments")]
+    public async Task<IActionResult> AddComment(Guid id, CommentDto commentDto)
+    {
+      var todo = await _repository.GetByIdAsync(id);
+      if (todo is null) return BadRequest();
+
+      todo = _repository.AddComment(todo, new Comment() { Text = commentDto.Text });
+      await _repository.SaveAsync();
+      return CreatedAtAction("GetOne", new { todo.Id }, todo);
+    }
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTag(Guid id, TagDto tagDto)
+    {
+      var todo = await _repository.GetByIdAsync(id);
+      if (todo is null) return BadRequest();
+
+      todo = await _repository.AddTagAsync(todo, new Tag() { Name = tagDto.Name, Color = tagDto.Color });
+      await _repository.SaveAsync();
+      return CreatedAtAction("GetOne", new { todo.Id }, todo);
+    }
   }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace web
 {
@@ -8,6 +9,7 @@ namespace web
     [Key]
     public string Name { get; set; }
     public ColorEnum Color { get; set; }
+    [JsonIgnore]
     public List<Todo> Todos { get; set; }
   }
 }

@@ -8,6 +8,8 @@ namespace web
   {
     Task<IEnumerable<Todo>> GetAllAsync();
     Task<Todo> GetByIdAsync(Guid id);
+    Todo AddComment(Todo todo, Comment comment);
+    Task<Todo> AddTagAsync(Todo todo, Tag tag);
     Task AddAsync(Todo todo);
     Task SaveAsync();
   }

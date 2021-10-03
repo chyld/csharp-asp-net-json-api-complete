@@ -13,7 +13,12 @@ namespace web
     public List<Tag> Tags { get; set; }
     public List<Comment> Comments { get; set; }
 
-    public Todo() { }
+    public Todo()
+    {
+      Tags = new();
+      Comments = new();
+    }
+
     public Todo(TodoDto todoDto)
     {
       Id = Guid.NewGuid();
