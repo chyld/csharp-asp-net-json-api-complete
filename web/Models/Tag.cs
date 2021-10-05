@@ -10,6 +10,6 @@ namespace web
     public string Name { get; set; }
     public ColorEnum Color { get; set; }
     [JsonIgnore]
-    public List<Todo> Todos { get; set; }
+    public List<Todo> Todos { get; set; } = new();
   }
 }
