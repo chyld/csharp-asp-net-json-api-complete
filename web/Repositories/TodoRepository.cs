@@ -24,17 +24,21 @@ namespace web
       .SingleOrDefaultAsync();
     }
 
-    public Todo AddComment(Todo todo, Comment comment)
+    public void AddComment(Todo todo, Comment comment)
     {
       todo.Comments.Add(comment);
-      return todo;
     }
 
-    public async Task<Todo> AddTagAsync(Todo todo, Tag tag)
+    public async Task AddTagAsync(Todo todo, Tag tag)
     {
+      if (todo.Tags.Where(t => t.Name == tag.Name).SingleOrDefault() is not null) return;
       var oldTag = await _db.Tags.Where(t => t.Name == tag.Name).SingleOrDefaultAsync();
       todo.Tags.Add(oldTag ?? tag);
-      return todo;
+    }
+
+    public void Toggle(Todo todo)
+    {
+      todo.IsOpen = !todo.IsOpen;
     }
 
     public async Task AddAsync(Todo todo)

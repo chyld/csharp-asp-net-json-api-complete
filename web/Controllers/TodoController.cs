@@ -59,7 +59,7 @@ namespace web
       var todo = await _repository.GetByIdAsync(id);
       if (todo is null) return BadRequest();
 
-      todo = _repository.AddComment(todo, new Comment() { Text = commentDto.Text });
+      _repository.AddComment(todo, new Comment() { Text = commentDto.Text });
       await _repository.SaveAsync();
       return CreatedAtAction("GetOne", new { todo.Id }, todo);
     }
@@ -70,18 +70,18 @@ namespace web
       var todo = await _repository.GetByIdAsync(id);
       if (todo is null) return BadRequest();
 
-      todo = await _repository.AddTagAsync(todo, new Tag() { Name = tagDto.Name, Color = tagDto.Color });
+      await _repository.AddTagAsync(todo, new Tag() { Name = tagDto.Name, Color = tagDto.Color });
       await _repository.SaveAsync();
       return CreatedAtAction("GetOne", new { todo.Id }, todo);
     }
 
-    [HttpPost("{id}/close")]
-    public async Task<IActionResult> Close(Guid id)
+    [HttpPatch("{id}/toggle")]
+    public async Task<IActionResult> Toggle(Guid id)
     {
       var todo = await _repository.GetByIdAsync(id);
       if (todo is null) return BadRequest();
 
-      todo.Status = StatusEnum.Closed;
+      _repository.Toggle(todo);
 
       await _repository.SaveAsync();
       return RedirectToAction("GetOne", new { todo.Id });

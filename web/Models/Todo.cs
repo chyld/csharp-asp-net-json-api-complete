@@ -6,7 +6,7 @@ namespace web
   public class Todo
   {
     public Guid Id { get; set; }
-    public StatusEnum Status { get; set; }
+    public bool IsOpen { get; set; }
     public PriorityEnum Priority { get; set; }
     public string Title { get; set; }
     public DateTime Due { get; set; }
@@ -22,7 +22,7 @@ namespace web
     public Todo(TodoDto todoDto)
     {
       Id = Guid.NewGuid();
-      Status = StatusEnum.Open;
+      IsOpen = true;
       Priority = todoDto.Priority;
       Title = todoDto.Title;
       Due = todoDto.Due;

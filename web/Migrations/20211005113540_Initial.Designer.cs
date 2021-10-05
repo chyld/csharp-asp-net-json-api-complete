@@ -9,7 +9,7 @@ using web;
 namespace web.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20211002070634_Initial")]
+    [Migration("20211005113540_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,10 +74,10 @@ namespace web.Migrations
                     b.Property<DateTime>("Due")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Priority")
+                    b.Property<bool>("IsOpen")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("Priority")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
