@@ -60,5 +60,25 @@ namespace test.Controllers
       okResult.StatusCode.Should().Be(200);
       _mockRepository.Verify(obj => obj.GetAllAsync());
     }
+
+    [Fact]
+    public async Task ShouldNotToggleTodoStateIncorrectId()
+    {
+      var result = await _controller.Toggle(Guid.NewGuid());
+      var badResult = result as BadRequestResult;
+      badResult.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task ShouldToggleTodoState()
+    {
+      Guid guid = Guid.NewGuid();
+      _mockRepository.Setup(obj => obj.GetByIdAsync(guid)).Returns(Task.FromResult(new Todo() { Id = guid, Title = "Write Code" }));
+      var result = await _controller.Toggle(guid);
+      var redirectActionResult = result as RedirectToActionResult;
+      _mockRepository.Verify(obj => obj.Toggle(It.IsAny<Todo>()));
+      redirectActionResult.RouteValues["Id"].Should().Be(guid);
+      redirectActionResult.ActionName.Should().Be("GetOne");
+    }
   }
 }
