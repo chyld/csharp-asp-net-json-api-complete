@@ -101,5 +101,26 @@ namespace test.Controllers
       createdActionResult.RouteValues["Id"].Should().Be(guid);
       _mockRepository.Verify(obj => obj.AddComment(It.IsAny<Todo>(), It.IsAny<Comment>()));
     }
+
+    [Fact]
+    public async Task ShouldNotAddTagBadId()
+    {
+      var result = await _controller.AddTag(Guid.NewGuid(), new TagDto());
+      var badResult = result as BadRequestResult;
+      badResult.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task ShouldAddTag()
+    {
+      Guid guid = Guid.NewGuid();
+      _mockRepository.Setup(obj => obj.GetByIdAsync(guid)).Returns(Task.FromResult(new Todo() { Id = guid, Title = "Write Code" }));
+      var result = await _controller.AddTag(guid, new TagDto());
+      var createdActionResult = result as CreatedAtActionResult;
+      createdActionResult.StatusCode.Should().Be(201);
+      createdActionResult.ActionName.Should().Be("GetOne");
+      createdActionResult.RouteValues["Id"].Should().Be(guid);
+      _mockRepository.Verify(obj => obj.AddTagAsync(It.IsAny<Todo>(), It.IsAny<Tag>()));
+    }
   }
 }
