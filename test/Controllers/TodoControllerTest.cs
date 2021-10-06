@@ -80,5 +80,26 @@ namespace test.Controllers
       redirectActionResult.RouteValues["Id"].Should().Be(guid);
       redirectActionResult.ActionName.Should().Be("GetOne");
     }
+
+    [Fact]
+    public async Task ShouldNotAddCommentBadId()
+    {
+      var result = await _controller.AddComment(Guid.NewGuid(), new CommentDto());
+      var badResult = result as BadRequestResult;
+      badResult.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task ShouldAddComment()
+    {
+      Guid guid = Guid.NewGuid();
+      _mockRepository.Setup(obj => obj.GetByIdAsync(guid)).Returns(Task.FromResult(new Todo() { Id = guid, Title = "Write Code" }));
+      var result = await _controller.AddComment(guid, new CommentDto() { Text = "This is a comment" });
+      var createdActionResult = result as CreatedAtActionResult;
+      createdActionResult.StatusCode.Should().Be(201);
+      createdActionResult.ActionName.Should().Be("GetOne");
+      createdActionResult.RouteValues["Id"].Should().Be(guid);
+      _mockRepository.Verify(obj => obj.AddComment(It.IsAny<Todo>(), It.IsAny<Comment>()));
+    }
   }
 }
