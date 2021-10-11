@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace web.Migrations
 {
@@ -11,8 +12,8 @@ namespace web.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Color = table.Column<int>(type: "INTEGER", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Color = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -23,11 +24,11 @@ namespace web.Migrations
                 name: "Todos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    IsOpen = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Priority = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Due = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsOpen = table.Column<bool>(type: "boolean", nullable: false),
+                    Priority = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Due = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,10 +39,10 @@ namespace web.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Text = table.Column<string>(type: "TEXT", nullable: true),
-                    TodoId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Text = table.Column<string>(type: "text", nullable: true),
+                    TodoId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,8 +59,8 @@ namespace web.Migrations
                 name: "TagTodo",
                 columns: table => new
                 {
-                    TagsName = table.Column<string>(type: "TEXT", nullable: false),
-                    TodosId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    TagsName = table.Column<string>(type: "text", nullable: false),
+                    TodosId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
